@@ -1,0 +1,25 @@
+.DS_Store
+tmp.*
+*.bak
+
+.env
+.env.*
+!.env.example
+
+# Go
+bin/
+pb/*
+report.xml
+go.work.sum
+
+# JetBrains
+.idea/*
+!.idea/vcs.xml
+!.idea/protobuf.xml
+!.idea/externalDependencies.xml
+!.idea/sqldialects.xml
+
+# VSCode
+.vscode/
+
+docs
