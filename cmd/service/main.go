@@ -2,9 +2,13 @@ package main
 
 import (
 	"github.com/caarlos0/env/v11"
-	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"narde/internal/config"
+	"narde/internal/service"
+	"narde/internal/transport/http"
+	"narde/internal/transport/http/handlers"
+	"narde/internal/transport/http/router"
+	"narde/pkg/jwt"
 	"narde/pkg/logger"
 )
 
@@ -16,13 +20,12 @@ func main() {
 	}
 
 	rootLogger := logger.InitRootLogger(cfg.Main.LogForcePlainText, logger.ParseEnvLoggerEnv(cfg.Main.LogLevel), "backend")
-	rootLogger.Info().Msg("Test")
-	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
 
-	router.Run() // listen and serve on 0.0.0.0:8080
+	//auth := middleware.NewAuth(jwt.MustParser())
+	authHandler := handlers.NewAuthHandler(service.NewAuthService(jwt.MustGenerator()))
+
+	server := http.NewServer(":8080", router.NewRouter(authHandler.Router()))
+	rootLogger.Info().Msg("Server is running")
+	server.Run()
+
 }
