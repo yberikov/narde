@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # The Go Backend Service
+  backend:
+    build: .
+    container_name: narde_backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy # Waits for the DB to be ready before starting
+    restart: unless-stopped
+
+  # The PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: narde_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_MAIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_MAIN_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_MAIN_DB_NAME}
+    ports:
+      - "5434:5432" # Map host port 5432 to container port 5432 for easy access
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_MAIN_USER} -d ${POSTGRES_MAIN_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+# Named volume for persisting database data
+volumes:
+  postgres_data:

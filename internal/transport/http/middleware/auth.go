@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"context"
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"narde/pkg/jwt"
 	"strings"
@@ -18,8 +18,8 @@ func NewAuth(parser *jwt.Parser) *Auth {
 	return &Auth{parser: parser}
 }
 
-func (m Auth) Handle(c fiber.Ctx) error {
-	ctx := c.RequestCtx()
+func (m Auth) Handle(c *fiber.Ctx) error {
+	ctx := c.Context()
 	logger := zerolog.Ctx(ctx)
 	authorization := c.Get(fiber.HeaderAuthorization)
 

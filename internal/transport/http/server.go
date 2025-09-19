@@ -1,8 +1,8 @@
 package http
 
 import (
-	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/middleware/cors"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 type (
@@ -25,7 +25,7 @@ func NewServer(address string, routers ...Router) *Server {
 
 	s.fiber.Use(
 		cors.New(cors.Config{
-			AllowOrigins: []string{"*"},
+			AllowOrigins: "*",
 		}),
 	)
 

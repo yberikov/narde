@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"narde/internal/transport/http/handlers/model"
 	"narde/internal/transport/http/router"
@@ -16,7 +16,8 @@ type (
 	}
 
 	AuthService interface {
-		Login(ctx context.Context) (*model.TokenResponse, error)
+		Register(ctx context.Context, req *model.RegisterRequest) error
+		Login(ctx context.Context, req *model.LoginRequest) (*model.TokenResponse, error)
 	}
 )
 
@@ -37,21 +38,32 @@ func (h *AuthHandler) Router() router.MakeRouter {
 	return h.makeRouter
 }
 
-func (h *AuthHandler) Register(ctx fiber.Ctx) error {
-	ctx.Write([]byte("Pong"))
-
-	return nil
-}
-
-func (h *AuthHandler) Login(c fiber.Ctx) error {
-	logger := zerolog.Ctx(c.RequestCtx())
-	var request model.LoginRequest
-	if err := c.Bind().Body(&request); err != nil {
+func (h *AuthHandler) Register(c *fiber.Ctx) error {
+	logger := zerolog.Ctx(c.Context())
+	var request model.RegisterRequest
+	if err := c.BodyParser(&request); err != nil {
 		logger.Error().Err(err).Send()
 		return c.Status(http.StatusBadRequest).JSON(model.NewErrorResponse("Cannot parse body"))
 	}
 
-	response, err := h.authService.Login(c.RequestCtx())
+	err := h.authService.Register(c.Context(), &request)
+	switch {
+	case err != nil:
+		return c.Status(http.StatusInternalServerError).JSON(model.ErrorResponse{Error: err.Error()})
+	}
+
+	return c.SendStatus(fiber.StatusOK)
+}
+
+func (h *AuthHandler) Login(c *fiber.Ctx) error {
+	logger := zerolog.Ctx(c.Context())
+	var request model.LoginRequest
+	if err := c.BodyParser(&request); err != nil {
+		logger.Error().Err(err).Send()
+		return c.Status(http.StatusBadRequest).JSON(model.NewErrorResponse("Cannot parse body"))
+	}
+
+	response, err := h.authService.Login(c.Context(), &request)
 	switch {
 	case err != nil:
 		return c.Status(http.StatusInternalServerError).JSON(model.ErrorResponse{Error: err.Error()})

@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 	"github.com/gofrs/uuid"
 )
 
@@ -12,7 +12,7 @@ const (
 	AuthTypeBearer    = "Bearer"
 )
 
-func GetUserIdFromCtx(c fiber.Ctx) (uuid.UUID, error) {
+func GetUserIdFromCtx(c *fiber.Ctx) (uuid.UUID, error) {
 	currentUserID, ok := c.Locals(UserLocalFiberKey).(uuid.UUID)
 	if !ok {
 		return uuid.Nil, errorInvalidTokenFmt
