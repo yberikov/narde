@@ -30,4 +30,12 @@ type (
 		ConnMaxLifetime time.Duration `env:"CONN_MAX_LIFETIME,required"`  // Time in seconds // 500s
 		MigratePath     string        `env:"MIGRATE_PATH"`
 	}
+
+	DragonflyCreds struct {
+		Host     string `env:"DRAGONFLY_HOST,notEmpty"`
+		Port     int    `env:"DRAGONFLY_PORT,required"`
+		DB       int    `env:"DRAGONFLY_DB,required"`
+		Password string `env:"DRAGONFLY_PASSWORD"`
+		PoolSize int    `env:"DRAGONFLY_POOL_SIZE,required"`
+	}
 )

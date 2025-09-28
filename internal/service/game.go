@@ -31,7 +31,7 @@ func (s *GameService) CreateGameState(ctx context.Context, player1, player2 uuid
 		GameID:        gameID,
 		WhitePlayerID: player1,
 		BlackPlayerID: player2,
-		Board:         [24]int{15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -15},
+		Board:         [26]int{0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -15, 0},
 		Turn:          domain.WhiteTurnType,
 		Dice:          rollDice(),
 		LastMoveAt:    time.Now(),
@@ -83,7 +83,6 @@ func (s *GameService) MakeMove(ctx context.Context, userID, gameID uuid.UUID, mo
 			dist := move.To - move.From
 			if val, ok := availableMovesMap[dist]; !ok || val <= 0 {
 				return nil, domain.ErrInvalidMove
-
 			}
 			piece := 1
 			availableMovesMap[dist] -= 1

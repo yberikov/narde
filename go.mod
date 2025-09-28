@@ -21,9 +21,11 @@ require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/fifo v1.1.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
@@ -53,6 +55,7 @@ require (
 	github.com/prometheus/client_model v0.0.0-20190129233127-fd36f4220a90 // indirect
 	github.com/prometheus/common v0.6.0 // indirect
 	github.com/prometheus/procfs v0.0.3 // indirect
+	github.com/redis/go-redis/v9 v9.14.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/savsgio/gotils v0.0.0-20250408102913-196191ec6287 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect

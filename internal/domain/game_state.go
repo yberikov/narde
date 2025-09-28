@@ -10,7 +10,7 @@ type GameState struct {
 	WhitePlayerID uuid.UUID
 	BlackPlayerID uuid.UUID
 
-	Board      [24]int
+	Board      [26]int
 	Turn       TurnType
 	Dice       [2]int
 	LastMoveAt time.Time
